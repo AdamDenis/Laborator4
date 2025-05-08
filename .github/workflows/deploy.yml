@@ -11,20 +11,33 @@ permissions:
   id-token: write
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Сохраняем сайт как артефакт (весь текущий каталог)
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: site
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: site
+          path: .
+
       - name: Setup Pages
         uses: actions/configure-pages@v3
-
-      - name: Upload static site
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: '.'
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
