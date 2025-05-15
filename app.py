@@ -1,10 +1,8 @@
+# application.py
 from flask import Flask, render_template
 
-app = Flask(__name__)
+application = Flask(__name__)  # not `app = Flask(...)`
 
-@app.route("/")
-def home():
+@application.route("/")
+def hello():
     return render_template("index.html")
-
-if __name__ == "__main__":
-    app.run(debug=True)
